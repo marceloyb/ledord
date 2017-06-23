@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "gerenciamento_arquivo.h"
 
 
 void menu (){
@@ -15,13 +16,14 @@ void menu (){
 int main (){
   int rodando = 1;
   int opcao;
-  FILE *file;
+
+  inicializa_txt();
   do{
     menu();
     scanf ("%i", &opcao);
     switch(opcao){
       case 1:
-        //import
+        importar();
         break;
       case 2:
         //buscar registro

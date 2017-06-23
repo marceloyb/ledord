@@ -1,0 +1,4 @@
+#ifndef GERENCIAMENTO_LED_H
+#define GERENCIAMENTO_LED_H
+
+#endif
