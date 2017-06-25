@@ -7,8 +7,8 @@ FILE *REGISTROTXT;
 FILE *novo_registro;
 
 void inicializa_txt();
-void importar();
-int buscar(char* id);
+void importar(char *nomeregistro);
+char buscar();
 void inserir(char *registro);
 void remover(char* id);
 

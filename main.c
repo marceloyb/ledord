@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "gerenciamento_arquivo.h"
 
 
@@ -16,17 +17,21 @@ void menu (){
 int main (){
   int rodando = 1;
   int opcao;
-
+  char string[50];
   inicializa_txt();
   do{
     menu();
     scanf ("%i", &opcao);
     switch(opcao){
       case 1:
-        importar();
+        __fpurge(stdin);
+        printf ("\nInsira o nome do novo arquivo de registros\n");
+        __fpurge(stdin);
+        fgets(string, sizeof(string), stdin);
+        importar(string);
         break;
       case 2:
-        //buscar registro
+        buscar();
         break;
       case 3:
         //inserir registro
