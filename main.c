@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "gerenciamento_arquivo.h"
+#include "gerenciamento_led.h"
 
 
 void menu (){
@@ -18,26 +19,24 @@ int main (){
   int rodando = 1;
   int opcao;
   char string[50];
+  char id[10];
   inicializa_txt();
+  printf ("Inicializou\n");
   do{
     menu();
     scanf ("%i", &opcao);
     switch(opcao){
       case 1:
-        __fpurge(stdin);
-        printf ("\nInsira o nome do novo arquivo de registros\n");
-        __fpurge(stdin);
-        fgets(string, sizeof(string), stdin);
-        importar(string);
+        importar();
         break;
       case 2:
-        buscar();
+        buscar(novo_registro);
         break;
       case 3:
-        //inserir registro
+        led_insert();
         break;
       case 4:
-        //remover registro
+        led_remove();
         break;
       case 0:
         rodando = 0;
