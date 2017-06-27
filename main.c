@@ -21,7 +21,6 @@ int main (){
   char string[50];
   char id[10];
   inicializa_txt();
-  printf ("Inicializou\n");
   do{
     menu();
     scanf ("%i", &opcao);

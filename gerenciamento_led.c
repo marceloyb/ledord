@@ -16,6 +16,7 @@ void led_insert(){
   char *nota = malloc(sizeof(char)*10);
   short tam_registro;
   short tam_registroled;
+  short tam_fragment;
   char string[50];
   int cabeca;
   int posicaohead;
@@ -54,7 +55,10 @@ void led_insert(){
   strcat(registro, nota);
   strcat(registro, "|");
   tam_registro = strlen(registro);
-
+  free (id);
+  free (nome);
+  free (curso);
+  free (nota);
   if (cabeca == -1){
     fseek(novo_registro, 0, SEEK_END);
     fwrite (&tam_registro, sizeof(tam_registro), 1, novo_registro);
@@ -65,15 +69,17 @@ void led_insert(){
     fread (&tam_registroled, sizeof(tam_registroled), 1, novo_registro);
     fseek (novo_registro, 2, SEEK_CUR);
     fread (&posicaohead, sizeof(posicaohead), 1, novo_registro);
-    printf ("\nPosicao head: %i\n", posicaohead);
-    if (tam_registro <= tam_registroled){
+    if (tam_registro <= tam_registroled + sizeof(short)){
+      tam_fragment = tam_registroled - tam_registro - sizeof(short);
       fseek (novo_registro, cabeca-3, SEEK_SET);
-      fwrite (&tam_registro, sizeof(tam_registro), 1, novo_registro);
-      fwrite (registro, sizeof(char), tam_registro, novo_registro);
+      fwrite (&tam_registro, sizeof(tam_registro), 1, novo_registro); // inserindo o tamanho do registro na posição da led
+      fwrite (registro, sizeof(char), tam_registro, novo_registro);  // inserindo o registro na posição da led
+      fwrite (&tam_fragment, sizeof(tam_fragment), 1, novo_registro);  // colocando tamanho da fragmentacao após inserçao na led
       fseek (novo_registro, 0, SEEK_SET);
       fwrite (&posicaohead, sizeof(posicaohead), 1, novo_registro);
     }
   }
+  printf ("\nAdicionado com sucesso!\n");
   fclose(novo_registro);
   novo_registro = NULL;
 }
@@ -93,7 +99,6 @@ void led_remove(){
   novo_registro = fopen(nomearq, "r+");
 
   offset = buscar(novo_registro);
-  printf ("Offset %i: \n", offset);
   if (LED.fp == NULL){
     led_start(novo_registro);
   }
@@ -121,7 +126,9 @@ void led_remove(){
       fwrite ("|", sizeof(char), 1, novo_registro);
       fwrite ("*", sizeof(char), 1, novo_registro);
       fwrite(&cabeca, sizeof(cabeca), 1, novo_registro);
-      fwrite (string, sizeof(char), tam_reg-sizeof(cabeca)-2, novo_registro);
+      fwrite (string, sizeof(char), tam_reg-sizeof(cabeca)-3, novo_registro);
+      fwrite ("|", sizeof(char), 1, novo_registro);
+      printf ("\nRemovido com sucesso!");
     }
     else {
       return;

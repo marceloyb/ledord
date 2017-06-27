@@ -64,7 +64,6 @@ void importar(){
   fseek(novo_registro, 0, SEEK_SET);
   int a;
   fread(&a, sizeof(head), 1, novo_registro);
-  printf("a: %d\n", a);
     do{
       strcpy(registro, "");
       id = get_rec(REGISTROTXT);
@@ -100,7 +99,8 @@ int buscar(FILE *reg){
   short rec_lgth = 2;
   char file_name[30];
   char search_key[6];
-  char id[7];
+  char id[6];
+  char teste[6] = "12312";
   char* field, *last;
 
 
@@ -113,7 +113,8 @@ int buscar(FILE *reg){
 
   printf ("\nInsira o ID\n");
   __fpurge(stdin);
-  fgets(id, sizeof(id), stdin);
+  scanf ("%s", id);
+
 
   fseek (reg, sizeof(int), SEEK_SET);
   fread (&rec_lgth, sizeof(rec_lgth), 1, reg);
@@ -133,20 +134,22 @@ int buscar(FILE *reg){
   }
 
   while (!feof(reg) && matched != 1){
-    printf ("OFFSET %i", offset);
     offset += rec_lgth + sizeof(rec_lgth);
     fseek (reg, rec_lgth - sizeof(search_key), SEEK_CUR);
-    printf ("\nOffset: %i", offset);
     fread (&rec_lgth, sizeof(rec_lgth), 1, reg);
     fread (&search_key, sizeof(search_key), 1, reg);
     if (!strcmp(id, search_key)){
       matched = 1;
       campo = get_rec(reg);
+      __fpurge(stdout);
       printf ("\n\nID: %s\n", search_key);
       campo = get_rec(reg);
+      __fpurge(stdout);
       printf ("Nome do candidato: %s\n", campo);
+      __fpurge(stdout);
       campo = get_rec(reg);
       printf ("Curso: %s\n", campo);
+      __fpurge(stdout);
       campo = get_rec(reg);
       printf ("Nota: %s\n", campo);
     }
